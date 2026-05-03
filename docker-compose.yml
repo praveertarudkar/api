@@ -1,0 +1,29 @@
+# API Nest by Praveer Tarudkar
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  api-nest:
+    build: .
+    container_name: api-nest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=change_this_secret_please
+      - RATE_LIMIT_MAX=100
+      - RATE_LIMIT_WINDOW=15
+    volumes:
+      - api-nest-data:/app/data   # Persist SQLite DB across restarts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  api-nest-data:
+    name: api-nest-data

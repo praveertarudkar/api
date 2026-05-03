@@ -1,0 +1,23 @@
+# API Nest by Praveer Tarudkar
+# Render.com deployment config (free tier)
+
+services:
+  - type: web
+    name: api-nest
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: RATE_LIMIT_WINDOW
+        value: 15
+    disk:
+      name: sqlite-data
+      mountPath: /app/data
+      sizeGB: 1
